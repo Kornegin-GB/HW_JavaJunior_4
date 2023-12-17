@@ -5,6 +5,7 @@ import java.sql.Connection;
 public class Main {
     public static void main(String[] args) {
         String searchAuthor = "Роберт Мартин";
+//        searchAuthor = "Эрих Гамма";
         // JDBC
         System.out.println("JDBC");
         DatabaseJDBC databaseJDBC = new DatabaseJDBC();
@@ -15,9 +16,10 @@ public class Main {
         databaseJDBC.dbClose(connectionDatabase);
 
         // HIBERNATE
-        System.out.println("HIBERNATE");
+        System.out.println("\nHIBERNATE");
         DatabaseHibernate databaseHibernate = new DatabaseHibernate();
-        databaseHibernate.createTable();
+        databaseHibernate.createTableBook();
         databaseHibernate.getBooksByAuthor(searchAuthor);
+        databaseHibernate.closedSession();
     }
 }

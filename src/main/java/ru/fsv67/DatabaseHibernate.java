@@ -3,7 +3,6 @@ package ru.fsv67;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -22,31 +21,74 @@ public class DatabaseHibernate {
     /**
      * Метод создания и заполнения таблицы BOOKS
      */
-    public void createTable() {
+    public void createTableBook() {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            book = new Book("Программист-прагматик", "Дэвид Томас");
+
+            Author author1 = new Author("Дэвид Томас");
+            session.persist(author1);
+
+            Author author2 = new Author("Роберт Мартин");
+            session.persist(author2);
+
+            Author author3 = new Author("Стив Макконнелл");
+            session.persist(author3);
+
+            Author author4 = new Author("Эрих Гамма");
+            session.persist(author4);
+
+            Author author5 = new Author("Эрик Фримен");
+            session.persist(author5);
+
+            Author author6 = new Author("Мартин Фаулер");
+            session.persist(author6);
+
+            Author author7 = new Author("Алан Купер");
+            session.persist(author7);
+
+            Author author8 = new Author("Дональд Кнут");
+            session.persist(author8);
+
+            Author author9 = new Author("Адитья Бхаргава");
+            session.persist(author9);
+
+            Author author10 = new Author("Томас Кормен");
+            session.persist(author10);
+
+
+            book = new Book("Программист-прагматик", author1);
             session.persist(book);
-            book = new Book("Чистый код", "Роберт Мартин");
+
+            book = new Book("Чистый код", author2);
             session.persist(book);
-            book = new Book("Совершенный код", "Стив Макконнелл");
+
+            book = new Book("Совершенный код", author3);
             session.persist(book);
-            book = new Book("Паттерны объектно-ориентированного проектирования", "Эрих Гамма");
+
+            book = new Book("Паттерны объектно-ориентированного проектирования", author4);
             session.persist(book);
-            book = new Book("Head First. Паттерны проектирования", "Эрик Фримен");
+
+            book = new Book("Head First. Паттерны проектирования", author5);
             session.persist(book);
-            book = new Book("Шаблоны корпоративных приложений", "Мартин Фаулер");
+
+            book = new Book("Шаблоны корпоративных приложений", author6);
             session.persist(book);
-            book = new Book("Идеальный программист", "Роберт Мартин");
+
+            book = new Book("Идеальный программист", author2);
             session.persist(book);
-            book = new Book("Психбольница в руках пациентов", "Алан Купер");
+
+            book = new Book("Психбольница в руках пациентов", author7);
             session.persist(book);
-            book = new Book("Искусство программирования", "Дональд Кнут");
+
+            book = new Book("Искусство программирования", author8);
             session.persist(book);
-            book = new Book("Грокаем алгоритмы", "Адитья Бхаргава");
+
+            book = new Book("Грокаем алгоритмы", author9);
             session.persist(book);
-            book = new Book("Алгоритмы. Построение и анализ", "Томас Кормен");
+
+            book = new Book("Алгоритмы. Построение и анализ", author10);
             session.persist(book);
+
             session.getTransaction().commit();
         }
     }
@@ -58,11 +100,19 @@ public class DatabaseHibernate {
      */
     public void getBooksByAuthor(String searchAuthor) {
         try (Session session = sessionFactory.openSession()) {
-            String hql = "FROM Book WHERE author = :author";
-            Query<Book> bookQuery = session.createQuery(hql, Book.class);
-            bookQuery.setParameter("author", searchAuthor);
-            List<Book> books = bookQuery.getResultList();
+            List<Book> books = session.createQuery(
+                            "FROM Book WHERE author = (FROM Author WHERE nameAuthor = :name_author)", Book.class
+                    ).setParameter("name_author", searchAuthor)
+                    .getResultList();
+
             books.forEach(System.out::println);
         }
+    }
+
+    /**
+     * Метод закрытия сессии
+     */
+    public void closedSession() {
+        sessionFactory.close();
     }
 }

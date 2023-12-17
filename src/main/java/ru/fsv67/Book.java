@@ -7,19 +7,17 @@ import jakarta.persistence.*;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @Column(name = "name_book")
     private String nameBook;
-    @Column(name = "author")
-    private String author;
 
-    public Book(int id, String nameBook, String author) {
-        this.id = id;
-        this.nameBook = nameBook;
-        this.author = author;
-    }
+    //    @Column(name = "author")
+//    private String author;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
+    private Author author;
 
-    public Book(String nameBook, String author) {
+    public Book(String nameBook, Author author) {
         this.nameBook = nameBook;
         this.author = author;
     }
@@ -35,19 +33,19 @@ public class Book {
         this.nameBook = nameBook;
     }
 
-    public String getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -56,7 +54,7 @@ public class Book {
         return "Book{" +
                 "id=" + id +
                 ", nameBook='" + nameBook + '\'' +
-                ", author='" + author + '\'' +
+                ", author=" + author.getNameAuthor() +
                 '}';
     }
 }
