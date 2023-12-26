@@ -8,7 +8,7 @@
         <property name="hibernate.dialect">org.hibernate.community.dialect.SQLiteDialect</property>
         <property name="hibernate.show_sql">false</property>
         <property name="showSql">false</property>
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
         <!--        <property name="hibernate.hbm2ddl.auto">create-drop</property>-->
         <mapping class="ru.fsv67.Book"/>
         <mapping class="ru.fsv67.Author"/>
